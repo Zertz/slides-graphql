@@ -1,12 +1,17 @@
-import React, { PureComponent } from 'react';
+// @flow
+import React, { PureComponent } from "react";
+import classnames from "classnames";
 
-class Slide extends PureComponent {
+type Props = {
+  children: any,
+  className: string
+};
+
+class Slide extends PureComponent<Props> {
   render() {
-    return (
-      <section>
-        {this.props.children}
-      </section>
-    );
+    const { children, className } = this.props;
+
+    return <section className={classnames(className)}>{children}</section>;
   }
 }
 
