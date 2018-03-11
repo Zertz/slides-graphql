@@ -6,4 +6,4 @@
 
 ### GraphQL
 
-* [Overview of Blocking vs Non-Blocking](https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/)
+* [GraphQL](https://graphql.org/)
