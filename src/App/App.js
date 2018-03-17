@@ -199,6 +199,7 @@ type Message {
 
 type User {
   name: String
+  username: String
 }
               `.trim()}
             </code>
