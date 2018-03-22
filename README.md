@@ -2,6 +2,13 @@
 
 > Présenté aux Technodrinks le 21 mars 2018
 
+## Getting started
+
+```
+yarn
+yarn start
+```
+
 ## Resources
 
 ### GraphQL
