@@ -40,7 +40,16 @@ class App extends PureComponent<Props> {
           <h4 className="fragment">Classcraft (Meteor + React)</h4>
         </Slide>
         <Slide>
+          <h3>Pssst…</h3>
+          <div className="fragment">
+            <h3>👩🏻‍💻 Développeuse</h3>
+            <hr />
+            <h3>👨🏻‍💻 Développeur</h3>
+          </div>
+        </Slide>
+        <Slide>
           <h2>XML-RPC</h2>
+          <p className="fragment">Remote Procedure Call</p>
           <img
             className="fragment"
             src="1990.png"
@@ -50,15 +59,17 @@ class App extends PureComponent<Props> {
         </Slide>
         <Slide>
           <h2>SOAP</h2>
+          <p className="fragment">Simple Object Access Protocol</p>
           <img
             className="fragment"
-            src="y2k.gif"
-            alt="Y2K"
+            src="soap.jpg"
+            alt="SOAP"
             style={this.imageStyle}
           />
         </Slide>
         <Slide>
           <h2>REST</h2>
+          <p className="fragment">REpresentational State Transfer</p>
           <img
             className="fragment"
             src="hero.jpg"
@@ -77,6 +88,28 @@ class App extends PureComponent<Props> {
           </h3>
         </Slide>
         <Slide>
+          <div className="fragment">
+            <h2>URL</h2>
+            <pre>
+              <code>
+                {`
+await fetch("https://jsonplaceholder.typicode.com/comments/1")
+                `.trim()}
+              </code>
+            </pre>
+          </div>
+          <div className="fragment">
+            <h2>JSON</h2>
+            <pre>
+              <code>
+                {`
+await response.json()
+                `.trim()}
+              </code>
+            </pre>
+          </div>
+        </Slide>
+        <Slide>
           <span role="img" aria-label="Inconvénients" style={this.emojiStyle}>
             👎
           </span>
@@ -87,9 +120,18 @@ class App extends PureComponent<Props> {
           </h3>
         </Slide>
         <Slide>
-          <h2 className="fragment">
-            🤯<br />Sémantique
+          <h2>
+            <span role="img" aria-label="Inconvénients" style={this.emojiStyle}>
+              🤯
+            </span>
+            <br />Sémantique
           </h2>
+          <img
+            className="fragment"
+            src="nuclear.jpg"
+            alt="Nuclear Bomb"
+            style={this.imageStyle}
+          />
         </Slide>
         <Slide>
           <h2>Problème n + 1</h2>
@@ -99,10 +141,24 @@ class App extends PureComponent<Props> {
 await fetch("https://jsonplaceholder.typicode.com/comments/1")
 await response.json()
 
-await fetch("https://jsonplaceholder.typicode.com/posts/{postId}")
+// { id: 1, postId: 1, ... }
+                `.trim()}
+            </code>
+          </pre>
+          <pre className="fragment">
+            <code>
+              {`
+await fetch("https://jsonplaceholder.typicode.com/posts/1")
 await response.json()
 
-await fetch("https://jsonplaceholder.typicode.com/users/{userId}")
+// { id: 1, userId: 1, ... }
+                `.trim()}
+            </code>
+          </pre>
+          <pre className="fragment">
+            <code>
+              {`
+await fetch("https://jsonplaceholder.typicode.com/users/1")
 await response.json()
 
 // { id: 1, ... }
@@ -123,7 +179,7 @@ await response.json()
 await fetch("https://api.com/comments/1?query=join[post,user]")
 await response.json()
 
-// { id: 1, post: ..., user: ... }
+// { id: 1, ..., post: { ... }, user: { ... } }
                 `.trim()}
             </code>
           </pre>
@@ -157,6 +213,152 @@ await response.json()
           </h2>
         </Slide>
         <Slide>
+          <h2>Comment ça marche?</h2>
+          <ol>
+            <li className="fragment">Schema</li>
+            <li className="fragment">Queries / Mutations</li>
+            <li className="fragment">???</li>
+            <li className="fragment">Response</li>
+          </ol>
+        </Slide>
+        <Slide>
+          <h2>Schema</h2>
+          <pre className="fragment">
+            <code>
+              {`
+type Comment {
+  # Le type ID sera transformé en String (5 !== "5")
+  id: ID!
+  post: Post
+  content: String
+}
+
+type Post {
+  id: ID!
+  author: User
+  content: String
+}
+
+type User {
+  id: ID!
+  name: String
+  username: String
+}
+              `.trim()}
+            </code>
+          </pre>
+        </Slide>
+        <Slide>
+          <h2>Query</h2>
+          <pre className="fragment">
+            <code>
+              {`
+type Query {
+  comment(id: String!): Comment
+}
+              `.trim()}
+            </code>
+          </pre>
+          <hr />
+          <pre className="fragment">
+            <code>
+              {`
+comment(id: 1) {
+  content
+  post: {
+    author: {
+      name
+    }
+  }
+}
+              `.trim()}
+            </code>
+          </pre>
+        </Slide>
+        <Slide>
+          <h2>Response</h2>
+          <pre className="fragment">
+            <code>
+              {`
+"comment": {
+  "content": "La distribution de photos de chats.",
+  "post": {
+    content: "L'internet est conçu pour?",
+    author: {
+      name: "Pier-Luc"
+    }
+  }
+}
+              `.trim()}
+            </code>
+          </pre>
+        </Slide>
+        <Slide>
+          <h2>Mutation 🖥</h2>
+          <pre className="fragment">
+            <code>
+              {`
+type Mutation {
+  createUser(input: UserInput): User
+  updateUser(id: ID!, input: UserInput): User
+}
+              `.trim()}
+            </code>
+          </pre>
+          <hr />
+          <pre className="fragment">
+            <code>
+              {`
+input UserInput {
+  name: String
+  username: String
+}
+              `.trim()}
+            </code>
+          </pre>
+        </Slide>
+        <Slide>
+          <h2>Mutation 💻</h2>
+          <pre className="fragment">
+            <code>
+              {`
+mutation ($user: UserInput!) {
+  updateUser(id: 1, input: $user) {
+    id
+    username
+  }
+}
+              `.trim()}
+            </code>
+          </pre>
+          <hr />
+          <pre className="fragment">
+            <code>
+              {`
+{
+  "user": {
+    "name": "Pier-Luc",
+    "username": "lolcats"
+  }
+}
+              `.trim()}
+            </code>
+          </pre>
+        </Slide>
+        <Slide>
+          <h2>Response</h2>
+          <pre className="fragment">
+            <code>
+              {`
+"user": {
+  "id": 2,
+  "username": "lolcats"
+}
+              `.trim()}
+            </code>
+          </pre>
+        </Slide>
+        <Slide>
           <span role="img" aria-label="Inconvénients" style={this.emojiStyle}>
             👎
           </span>
@@ -178,69 +380,8 @@ await response.json()
             🎉
           </span>
         </Slide>
-        <Slide>
-          <h2>Comment ça marche?</h2>
-        </Slide>
-        <Slide>
-          <h2>Schema</h2>
-          <pre className="fragment">
-            <code>
-              {`
-type Comment {
-  id: String
-  message: Message
-  content: String
-}
-
-type Message {
-  author: User
-  content: String
-}
-
-type User {
-  name: String
-  username: String
-}
-              `.trim()}
-            </code>
-          </pre>
-        </Slide>
-        <Slide>
-          <h2>Query</h2>
-          <pre className="fragment">
-            <code>
-              {`
-comment(id: 1) {
-  content
-  message: {
-    author: {
-      name
-    }
-  }
-}
-              `.trim()}
-            </code>
-          </pre>
-        </Slide>
-        <Slide>
-          <h2>Response</h2>
-          <pre className="fragment">
-            <code>
-              {`
-"message": {
-  "content": "La distribution de photos de chats.",
-  "message": {
-    content: "L'internet est conçu pour?",
-    author: {
-      name: "Pier-Luc"
-    }
-  }
-}
-              `.trim()}
-            </code>
-          </pre>
-        </Slide>
-        <Slide>Code!</Slide>
+        <Slide>Démo Github!</Slide>
+        <Slide>Deploiement!</Slide>
         <Slide>https://github.com/Zertz/slides-graphql</Slide>
       </Slides>
     );
